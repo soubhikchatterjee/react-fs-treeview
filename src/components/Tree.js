@@ -1,22 +1,25 @@
 import React from "react";
-// import { confirmAlert } from "react-confirm-alert"; // Import
-// import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import path from "path";
+import PropTypes from "prop-types";
 import request from "../services/request";
 import TreeNode from "./TreeNode";
 import icon from "./fontawesome";
 import Search from "./Search";
 import RenameModal from "./Modals/rename";
 import DeleteModal from "./Modals/delete";
+import MoveModal from "./Modals/move";
 
 export default class Tree extends React.Component {
-  BASE_PATH =
-    this.props.basePath ||
-    "/home/soubhik/Documents/EV Syncer Test Data/Sync Dummy Data/NestedSETS";
+  BASE_PATH = this.props.basePath;
 
   state = {
     nodes: [],
-    newFileName: ""
+    newFileName: "",
+    overwrite: false,
+    dragdrop: {
+      sourceNode: {},
+      destinationNode: {}
+    }
   };
 
   componentDidMount() {
@@ -66,6 +69,23 @@ export default class Tree extends React.Component {
     });
   };
 
+  handleOnMove = async () => {
+    const response = await request.dragDrop({
+      source: this.state.dragdrop.sourceNode.path,
+      destination: this.state.dragdrop.destinationNode.path,
+      overwrite: this.state.overwrite
+    });
+
+    this.setState({
+      overwrite: false
+    });
+
+    if (response.status === 201) {
+      this.removeItem(this.state.nodes, this.state.dragdrop.sourceNode);
+      this.emptyChildren(this.state.nodes, this.state.dragdrop.destinationNode);
+    }
+  };
+
   handleOnRename = async selectedNode => {
     const response = await request.renameNode({
       oldPath: selectedNode.path,
@@ -101,6 +121,7 @@ export default class Tree extends React.Component {
         },
         () => {
           RenameModal({
+            selectedNode,
             newFileName: this.state.newFileName,
             handleOnChange: this.handleOnChange,
             handleOnRename: () => this.handleOnRename(selectedNode)
@@ -161,6 +182,7 @@ export default class Tree extends React.Component {
         // If its exactly the same path append the new node in its children array
         if (selectedNode.path === iterator.path) {
           iterator.children = [];
+          iterator.isOpen = false;
 
           // Prepare a new version of the current state
           const newNodes = this.state.nodes;
@@ -232,6 +254,61 @@ export default class Tree extends React.Component {
     }
   };
 
+  // Toggles the overwrite checkbox
+  toggleOverwrite = () => {
+    this.setState({
+      overwrite: !this.state.overwrite
+    });
+  };
+
+  // Drag & Drop handlers
+  onDrop = (event, selectedNode) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (selectedNode.type === "file") {
+      window.alert("Destination is not a directory");
+      return;
+    }
+
+    this.setState(
+      {
+        dragdrop: {
+          sourceNode: this.state.dragdrop.sourceNode,
+          destinationNode: selectedNode
+        }
+      },
+      async () => {
+        MoveModal({
+          filename: this.state.dragdrop.sourceNode.name,
+          destinationPath: selectedNode.path,
+          handleOnMove: this.handleOnMove,
+          overwrite: this.state.overwrite,
+          toggleOverwrite: this.toggleOverwrite
+        });
+      }
+    );
+  };
+
+  onDrag = event => {
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
+  onDragOver = event => event.preventDefault();
+
+  onDragStart = (event, selectedNode) => {
+    event.stopPropagation();
+
+    this.setState({
+      dragdrop: {
+        sourceNode: selectedNode,
+        destinationNode: this.state.dragdrop.destinationNode
+      }
+    });
+    event.dataTransfer.setData("text/plain", event.target.id);
+  };
+
   render() {
     return (
       <div className="container" style={{ width: this.props.width || "250px" }}>
@@ -240,18 +317,23 @@ export default class Tree extends React.Component {
           {this.state.nodes.map(node => (
             <div key={node.path}>
               <div
-                className="item-wrapper mb"
                 onClick={event => {
                   this.handleClick(event, node);
                 }}
+                className="item-wrapper mb"
               >
                 {icon.file(node)}
                 {node.name}
               </div>
+
               <TreeNode
                 node={node}
                 handleClick={this.handleClick}
                 handleRightClick={this.handleRightClick}
+                onDragStart={this.onDragStart}
+                onDrag={this.onDrag}
+                onDragOver={this.onDragOver}
+                onDrop={this.onDrop}
               />
             </div>
           ))}
@@ -260,3 +342,8 @@ export default class Tree extends React.Component {
     );
   }
 }
+
+Tree.propTypes = {
+  basePath: PropTypes.string.isRequired,
+  width: PropTypes.string
+};

@@ -13,6 +13,7 @@ import {
   faWindowClose
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import PropTypes from "prop-types";
 
 const FileIcon = node => {
   if (node.type === "file") {
@@ -88,6 +89,10 @@ const fileDecorator = fileExtension => {
         class: "grey"
       };
   }
+};
+
+FileIcon.propTypes = {
+  node: PropTypes.object.isRequired
 };
 
 export default {

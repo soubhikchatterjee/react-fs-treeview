@@ -1,9 +1,18 @@
 import React from "react";
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 import icon from "./fontawesome";
+import PropTypes from "prop-types";
 
 const TreeNode = props => {
-  const { node, handleClick, handleRightClick } = props;
+  const {
+    node,
+    handleClick,
+    handleRightClick,
+    onDragStart,
+    onDrag,
+    onDragOver,
+    onDrop
+  } = props;
 
   return (
     <div className="indent">
@@ -13,6 +22,11 @@ const TreeNode = props => {
             key={child.path}
             className="mb"
             onClick={event => handleClick(event, child)}
+            draggable={true}
+            onDragStart={event => onDragStart(event, child)}
+            onDrag={onDrag}
+            onDragOver={onDragOver}
+            onDrop={event => onDrop(event, child)}
           >
             <ContextMenuTrigger id={child.path}>
               <div className="item-wrapper mb">
@@ -38,11 +52,26 @@ const TreeNode = props => {
               node={child}
               handleClick={handleClick}
               handleRightClick={handleRightClick}
+              draggable={true}
+              onDragStart={onDragStart}
+              onDrag={onDrag}
+              onDragOver={onDragOver}
+              onDrop={onDrop}
             />
           </div>
         ))}
     </div>
   );
+};
+
+TreeNode.propTypes = {
+  node: PropTypes.object.isRequired,
+  handleClick: PropTypes.func.isRequired,
+  handleRightClick: PropTypes.func.isRequired,
+  onDragStart: PropTypes.func.isRequired,
+  onDrag: PropTypes.func.isRequired,
+  onDragOver: PropTypes.func.isRequired,
+  onDrop: PropTypes.func.isRequired
 };
 
 export default TreeNode;

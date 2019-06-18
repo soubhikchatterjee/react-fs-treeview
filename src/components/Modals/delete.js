@@ -1,8 +1,9 @@
 import React from "react";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+import PropTypes from "prop-types";
 
-export default ({ path, handleOnDelete }) => {
+const deleteModal = ({ path, handleOnDelete }) => {
   return confirmAlert({
     customUI: ({ onClose }) => {
       return (
@@ -34,3 +35,10 @@ export default ({ path, handleOnDelete }) => {
     }
   });
 };
+
+deleteModal.propTypes = {
+  path: PropTypes.string.isRequired,
+  handleOnDelete: PropTypes.func.isRequired
+};
+
+export default deleteModal;

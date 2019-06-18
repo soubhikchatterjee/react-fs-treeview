@@ -13,7 +13,7 @@
 }
 
 code {
-  background-color: #f4f4f4;
+  background-color: #e0dede;
   border-radius: 3px;
   font-family: courier, monospace;
   padding: 0 3px;
@@ -30,4 +30,17 @@ react-confirm-alert-overlay.rename input[type="text"] {
 .pull-right {
   display: inline-block;
   margin: 0px auto;
+}
+
+.replace-folder-wrapper {
+  font-size: 0.8em;
+  font-weight: 500;
+  display: flex;
+  padding-top: 20px;
+
+}
+
+.divider {
+  border: 0.5px solid #e4e4e4;
+  width: 100%;
 }

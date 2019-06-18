@@ -4,6 +4,7 @@ const cors = require("cors");
 const base64 = require("base-64");
 const app = express();
 const fs = require("fs");
+const fsx = require("fs-extra");
 const path = require("path");
 const rimraf = require("rimraf");
 const glob = require("glob");
@@ -20,7 +21,7 @@ app.get("/", (req, res) => {
   fs.readdir(dirPath, (err, files) => {
     if (!files) {
       console.log("No Files");
-      return {};
+      return res.json([]);
     }
 
     let finalList = [];
@@ -39,10 +40,14 @@ app.get("/", (req, res) => {
       if (isDirectory) {
         delete fileProperties.extension;
         fileProperties.children = [];
+        // Directories should appear on top
+        finalList.unshift(fileProperties);
+      } else {
+        // Files should appear at the end
+        finalList.push(fileProperties);
       }
-      finalList.push(fileProperties);
     });
-    res.json(finalList);
+    return res.json(finalList);
   });
 });
 
@@ -83,6 +88,21 @@ app.get("/search", (req, res) => {
     }
 
     return res.json(final);
+  });
+});
+
+// For Drag and Drop
+app.post("/dragdrop", (req, res) => {
+  const { source, destination, overwrite } = req.body;
+  const filename = path.basename(source);
+  const destinationPath = `${destination}${path.sep}${filename}`;
+
+  fsx.move(source, destinationPath, { overwrite }, error => {
+    if (error) {
+      return res.status(400).send("NOTOK");
+    }
+
+    return res.status(201).send("OK");
   });
 });
 

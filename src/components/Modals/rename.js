@@ -1,8 +1,9 @@
 import React from "react";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
+import PropTypes from "prop-types";
 
-export default ({ newFileName, handleOnChange, handleOnRename }) => {
+const renameModal = ({ newFileName, handleOnChange, handleOnRename }) => {
   return confirmAlert({
     customUI: ({ onClose }) => {
       return (
@@ -36,3 +37,11 @@ export default ({ newFileName, handleOnChange, handleOnRename }) => {
     }
   });
 };
+
+renameModal.propTypes = {
+  newFileName: PropTypes.string.isRequired,
+  handleOnChange: PropTypes.func.isRequired,
+  handleOnRename: PropTypes.func.isRequired
+};
+
+export default renameModal;

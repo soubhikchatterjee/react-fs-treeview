@@ -1,6 +1,7 @@
 import React from "react";
 import icon from "./fontawesome";
 import request from "../services/request";
+import PropTypes from "prop-types";
 
 class Search extends React.Component {
   state = {
@@ -48,7 +49,7 @@ class Search extends React.Component {
         {this.state.result.map(item => (
           <div key={item.path} className="indent mb search-item">
             <div>
-              {icon.file(item)} {item.name}
+              {icon.file(item)} <span>{item.name}</span>
             </div>
             <div className="search-path">{item.path}</div>
           </div>
@@ -93,5 +94,9 @@ class Search extends React.Component {
     );
   }
 }
+
+Search.propTypes = {
+  basePath: PropTypes.string.isRequired
+};
 
 export default Search;
