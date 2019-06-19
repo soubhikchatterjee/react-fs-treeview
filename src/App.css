@@ -3,6 +3,7 @@
   height: 100vh;
   overflow: scroll;
   scrollbar-width: thin;
+  resize: horizontal;
 }
 
 .indent-root {
@@ -23,65 +24,35 @@
   white-space: nowrap;
 }
 
-/* Search Styles */
-.search-wrapper {
-  height: 35px;
-  width: 100%;
-  padding-bottom: 10px;
-  position: relative;
-}
-
-.search {
-  width: 100%;
-  height: 100%;
-  border: 1px solid rgb(180, 179, 179);
-  border-radius: 0;
-  padding-left: 30px;
-  color: grey;
-  font-size: 0.85em;
-  font-weight: 500;
-  /* border: 1px solid purple; */
-}
-
-.searchIcon {
-  position: absolute;
-  padding-left: 8px;
-  padding-top: 12px;
-  color: grey;
-  font-size: 0.85em;
-  font-weight: 200;
-}
-
-.search-results {
-  background: #ffffff;
-  padding-top: 10px;
-  width: 100%;
-  height: 100vh;
-}
-
-.empty-results {
-  padding-top: 20px;
-  text-align: center;
-  font-size: 0.8em;
-}
-
-.search-item:hover > div{
-  background: rgba(0, 0, 0, 0.15);
-}
-
-.search-path {
-  font-size: 10px;
-  color: #6e6e6e;
-  padding: 5px 0;
-  padding-left: 20px;
-}
-
 .icon {
   padding-right: 5px;
 }
 
 .icon.folder {
   color: #fab019;
+}
+
+/* Bookmarks */
+.bookmark-wrapper {
+  background: white;
+  border: 1px solid white;
+}
+
+.bookmark-wrapper p.title {
+  width: 100%;
+  margin-left: 10px;
+  font-weight: bold;
+}
+
+.icon.bookmarked {
+  color: #20880098;
+}
+
+.bookmark-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
 }
 
 .tomato {
@@ -107,6 +78,9 @@
 }
 .brown {
   color: #574038;
+}
+.yellow {
+  color: #fab019;
 }
 
 .dragthis {

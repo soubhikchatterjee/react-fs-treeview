@@ -99,7 +99,7 @@ app.post("/dragdrop", (req, res) => {
 
   fsx.move(source, destinationPath, { overwrite }, error => {
     if (error) {
-      return res.status(400).send("NOTOK");
+      return res.status(400).send("NOT_OK");
     }
 
     return res.status(201).send("OK");
@@ -113,8 +113,11 @@ app.put("/rename", (req, res) => {
     newFileName
   )}`;
 
-  fs.rename(oldPath, newFilePath, function(err) {
-    if (err) console.log("ERROR: " + err);
+  fsx.move(oldPath, newFilePath, { overwrite: false }, error => {
+    if (error) {
+      return res.status(400).send("NOT_OK");
+    }
+
     return res.json({
       newFilePath
     });

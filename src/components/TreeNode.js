@@ -6,6 +6,7 @@ import PropTypes from "prop-types";
 const TreeNode = props => {
   const {
     node,
+    currentFile,
     handleClick,
     handleRightClick,
     onDragStart,
@@ -20,7 +21,6 @@ const TreeNode = props => {
         node.children.map(child => (
           <div
             key={child.path}
-            className="mb"
             onClick={event => handleClick(event, child)}
             draggable={true}
             onDragStart={event => onDragStart(event, child)}
@@ -29,7 +29,13 @@ const TreeNode = props => {
             onDrop={event => onDrop(event, child)}
           >
             <ContextMenuTrigger id={child.path}>
-              <div className="item-wrapper mb">
+              <div
+                className={
+                  currentFile.path === child.path
+                    ? "item-wrapper blue mb"
+                    : "item-wrapper mb"
+                }
+              >
                 {icon.file(child)}
                 {child.name}
               </div>
@@ -47,9 +53,17 @@ const TreeNode = props => {
               >
                 Delete
               </MenuItem>
+              <MenuItem divider />
+              <MenuItem
+                data={{ node: child, action: "bookmark" }}
+                onClick={handleRightClick}
+              >
+                {child.bookmarked ? "Remove Bookmark" : "Bookmark"}
+              </MenuItem>
             </ContextMenu>
             <TreeNode
               node={child}
+              currentFile={currentFile}
               handleClick={handleClick}
               handleRightClick={handleRightClick}
               draggable={true}

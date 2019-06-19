@@ -2,6 +2,8 @@ import React from "react";
 import icon from "./fontawesome";
 import request from "../services/request";
 import PropTypes from "prop-types";
+import Bookmark from "./Bookmark";
+import "../Search.css";
 
 class Search extends React.Component {
   state = {
@@ -77,7 +79,7 @@ class Search extends React.Component {
   render() {
     return (
       <div className="search-wrapper">
-        <span className="searchIcon">{icon.search()}</span>
+        <span className="search-icon">{icon.search()}</span>
         <input
           type="text"
           className="fa search"
@@ -85,6 +87,10 @@ class Search extends React.Component {
           onChange={this.handleSearch}
           onKeyDown={this.clearSearch}
           value={this.state.query}
+        />
+        <Bookmark
+          bookmarks={this.props.bookmarks}
+          handleBookmarkClick={this.props.handleBookmarkClick}
         />
 
         <div style={{ display: this.state.showSearchBox ? "block" : "none" }}>
@@ -96,7 +102,8 @@ class Search extends React.Component {
 }
 
 Search.propTypes = {
-  basePath: PropTypes.string.isRequired
+  basePath: PropTypes.string.isRequired,
+  bookmarks: PropTypes.object.isRequired
 };
 
 export default Search;

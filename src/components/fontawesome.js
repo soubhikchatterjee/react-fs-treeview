@@ -10,7 +10,8 @@ import {
   faFileCsv,
   faFile,
   faSearch,
-  faWindowClose
+  faWindowClose,
+  faStar
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
@@ -20,7 +21,9 @@ const FileIcon = node => {
     const fileDecotator = fileDecorator(node.extension);
     return (
       <FontAwesomeIcon
-        className={`icon ${fileDecotator.class}`}
+        className={`icon ${fileDecotator.class} ${
+          node.bookmarked ? "bookmarked" : null
+        }`}
         icon={fileDecotator.icon}
         size="1x"
       />
@@ -29,7 +32,7 @@ const FileIcon = node => {
 
   return (
     <FontAwesomeIcon
-      className="icon folder"
+      className={`icon folder ${node.bookmarked ? "bookmarked" : null}`}
       icon={node.isOpen ? faFolderOpen : faFolder}
       size="1x"
     />
@@ -38,6 +41,10 @@ const FileIcon = node => {
 
 const SearchIcon = () => {
   return <FontAwesomeIcon icon={faSearch} />;
+};
+
+const StarIcon = () => {
+  return <FontAwesomeIcon className="yellow" icon={faStar} />;
 };
 
 const CloseIcon = () => {
@@ -98,5 +105,6 @@ FileIcon.propTypes = {
 export default {
   file: FileIcon,
   search: SearchIcon,
+  star: StarIcon,
   close: CloseIcon
 };

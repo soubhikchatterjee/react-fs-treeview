@@ -8,6 +8,7 @@ import Search from "./Search";
 import RenameModal from "./Modals/rename";
 import DeleteModal from "./Modals/delete";
 import MoveModal from "./Modals/move";
+import AlertModal from "./Modals/alert";
 
 export default class Tree extends React.Component {
   BASE_PATH = this.props.basePath;
@@ -15,6 +16,11 @@ export default class Tree extends React.Component {
   state = {
     nodes: [],
     newFileName: "",
+    currentFile: {
+      name: "",
+      path: ""
+    },
+    bookmarks: {},
     overwrite: false,
     dragdrop: {
       sourceNode: {},
@@ -54,6 +60,15 @@ export default class Tree extends React.Component {
       return;
     }
 
+    if (selectedNode.type === "file") {
+      this.setState({
+        currentFile: {
+          name: selectedNode.name,
+          path: selectedNode.path
+        }
+      });
+    }
+
     selectedNode.isOpen = !selectedNode.isOpen;
 
     // Get children of a selected node
@@ -70,34 +85,51 @@ export default class Tree extends React.Component {
   };
 
   handleOnMove = async () => {
-    const response = await request.dragDrop({
-      source: this.state.dragdrop.sourceNode.path,
-      destination: this.state.dragdrop.destinationNode.path,
-      overwrite: this.state.overwrite
-    });
+    try {
+      const response = await request.dragDrop({
+        source: this.state.dragdrop.sourceNode.path,
+        destination: this.state.dragdrop.destinationNode.path,
+        overwrite: this.state.overwrite
+      });
+      if (response.status === 201) {
+        this.removeItem(this.state.nodes, this.state.dragdrop.sourceNode);
+        this.emptyChildren(
+          this.state.nodes,
+          this.state.dragdrop.destinationNode
+        );
+      }
+    } catch (error) {
+      AlertModal({
+        title: "Error",
+        message: "Item already exists in the destination"
+      });
+    }
 
     this.setState({
       overwrite: false
     });
-
-    if (response.status === 201) {
-      this.removeItem(this.state.nodes, this.state.dragdrop.sourceNode);
-      this.emptyChildren(this.state.nodes, this.state.dragdrop.destinationNode);
-    }
   };
 
   handleOnRename = async selectedNode => {
-    const response = await request.renameNode({
-      oldPath: selectedNode.path,
-      newFileName: this.state.newFileName
-    });
-
-    if (response.status === 200) {
-      // Add the Item to state
-      this.addItem(this.state.nodes, {
-        ...selectedNode,
-        newName: this.state.newFileName,
-        newPath: response.data.newFilePath
+    try {
+      const response = await request.renameNode({
+        oldPath: selectedNode.path,
+        newFileName: this.state.newFileName
+      });
+      if (response.status === 200) {
+        // Add the Item to state
+        this.addItem(this.state.nodes, {
+          ...selectedNode,
+          newName: this.state.newFileName,
+          newPath: response.data.newFilePath
+        });
+      }
+    } catch (error) {
+      AlertModal({
+        title: "Error",
+        message: `A ${
+          selectedNode.type === "file" ? "file" : "folder"
+        } with that name already exists`
       });
     }
   };
@@ -136,6 +168,43 @@ export default class Tree extends React.Component {
         path: selectedNode.path,
         handleOnDelete: () => this.handleOnDelete(selectedNode)
       });
+    }
+
+    // Bookmark a node
+    if (action === "bookmark") {
+      if (selectedNode.bookmarked) {
+        selectedNode.bookmarked = false;
+        // Remove the item from the bookmark history
+        let bookmarks = this.state.bookmarks;
+        delete bookmarks[selectedNode.path];
+        this.setState({
+          bookmarks
+        });
+      } else {
+        selectedNode.bookmarked = true;
+        // Add the item to the bookmark history
+        this.setState({
+          bookmarks: {
+            ...this.state.bookmarks,
+            [selectedNode.path]: selectedNode
+          }
+        });
+      }
+
+      const newNodes = this.state.nodes;
+      this.setState({
+        nodes: newNodes
+      });
+    }
+  };
+
+  handleBookmarkClick = selectedBookmark => {
+    console.log("handleBookmarkClick", selectedBookmark.path);
+  };
+
+  // Open nested folders
+  openFoldersRecursively = (nodes, folderToOpen) => {
+    for (const iterator of nodes) {
     }
   };
 
@@ -267,7 +336,10 @@ export default class Tree extends React.Component {
     event.stopPropagation();
 
     if (selectedNode.type === "file") {
-      window.alert("Destination is not a directory");
+      AlertModal({
+        title: "Error",
+        message: "Destination is not a directory"
+      });
       return;
     }
 
@@ -312,7 +384,11 @@ export default class Tree extends React.Component {
   render() {
     return (
       <div className="container" style={{ width: this.props.width || "250px" }}>
-        <Search basePath={this.BASE_PATH} />
+        <Search
+          basePath={this.BASE_PATH}
+          bookmarks={this.state.bookmarks}
+          handleBookmarkClick={this.handleBookmarkClick}
+        />
         <div className="indent-root">
           {this.state.nodes.map(node => (
             <div key={node.path}>
@@ -328,6 +404,7 @@ export default class Tree extends React.Component {
 
               <TreeNode
                 node={node}
+                currentFile={this.state.currentFile}
                 handleClick={this.handleClick}
                 handleRightClick={this.handleRightClick}
                 onDragStart={this.onDragStart}
