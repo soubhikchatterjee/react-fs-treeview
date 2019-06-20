@@ -9,7 +9,7 @@ function App() {
     <div className="App">
       <Tree
         styles={{ width: "300px", fontSize: "0.9em" }}
-        basePath="/home/soubhik/Documents/EV Syncer Test Data"
+        basePath="/home/soubhik/Documents/EV Syncer Test Data/Sync Dummy Data/NestedSETS"
         disableContextMenu={false}
       />
     </div>

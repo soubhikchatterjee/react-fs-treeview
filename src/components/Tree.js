@@ -271,7 +271,6 @@ export default class Tree extends React.Component {
       if (selectedNode.path.includes(iterator.path)) {
         // If its exactly the same path append the new node in its children array
         if (selectedNode.path === iterator.path) {
-          // iterator.children.unshift(...newChildren);
           iterator.children = { ...newChildren, ...iterator.children };
 
           // Prepare a new version of the current state
