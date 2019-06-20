@@ -16,7 +16,9 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PropTypes from "prop-types";
 
-const FileIcon = node => {
+const FileIcon = (node, bookmarks) => {
+  node.bookmarked = bookmarks && bookmarks[node.path] ? true : false;
+
   if (node.type === "file") {
     const fileDecotator = fileDecorator(node.extension);
     return (
@@ -99,7 +101,8 @@ const fileDecorator = fileExtension => {
 };
 
 FileIcon.propTypes = {
-  node: PropTypes.object.isRequired
+  node: PropTypes.object.isRequired,
+  bookmarks: PropTypes.object.isRequired
 };
 
 export default {

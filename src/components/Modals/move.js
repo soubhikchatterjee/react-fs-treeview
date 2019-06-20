@@ -46,7 +46,7 @@ const moveModal = ({
                     onClose();
                   }}
                 >
-                  Proceed
+                  Move
                 </button>
               </div>
             </div>

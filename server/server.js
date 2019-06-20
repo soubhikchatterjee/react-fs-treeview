@@ -21,32 +21,36 @@ app.get("/", (req, res) => {
   fs.readdir(dirPath, (err, files) => {
     if (!files) {
       console.log("No Files");
-      return res.json([]);
+      return res.json({});
     }
 
-    let finalList = [];
+    let finalList = {};
     files.forEach(file => {
       const fullPath = `${dirPath}/${file}`;
       const isDirectory = fs.lstatSync(fullPath).isDirectory();
       let fileProperties = {
-        name: file,
-        path: fullPath,
-        size: fs.statSync(fullPath).size,
-        extension: path.extname(file),
-        type: isDirectory ? "directory" : "file",
-        isOpen: false
+        [fullPath]: {
+          name: file,
+          path: fullPath,
+          size: fs.statSync(fullPath).size,
+          extension: path.extname(file),
+          type: isDirectory ? "directory" : "file",
+          isOpen: false,
+          bookmarked: false
+        }
       };
 
       if (isDirectory) {
-        delete fileProperties.extension;
-        fileProperties.children = [];
+        delete fileProperties[fullPath].extension;
+        fileProperties[fullPath].children = {};
         // Directories should appear on top
-        finalList.unshift(fileProperties);
+        finalList = { ...fileProperties, ...finalList };
       } else {
         // Files should appear at the end
-        finalList.push(fileProperties);
+        finalList = { ...finalList, ...fileProperties };
       }
     });
+
     return res.json(finalList);
   });
 });
@@ -115,6 +119,7 @@ app.put("/rename", (req, res) => {
 
   fsx.move(oldPath, newFilePath, { overwrite: false }, error => {
     if (error) {
+      console.log("Error", error);
       return res.status(400).send("NOT_OK");
     }
 
