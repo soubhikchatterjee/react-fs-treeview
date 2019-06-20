@@ -14,7 +14,7 @@ export default class Tree extends React.Component {
   BASE_PATH = this.props.basePath;
 
   state = {
-    nodes: [],
+    nodes: {},
     newFileName: "",
     currentFile: {
       name: "",
@@ -28,24 +28,58 @@ export default class Tree extends React.Component {
     }
   };
 
-  componentDidMount() {
-    const rootNode = {
-      name: path.basename(this.BASE_PATH),
-      path: this.BASE_PATH,
-      type: "directory",
-      size: 0,
-      isOpen: false,
-      children: []
+  _getRootNode() {
+    return {
+      [this.BASE_PATH]: {
+        name: path.basename(this.BASE_PATH),
+        path: this.BASE_PATH,
+        type: "directory",
+        size: 0,
+        isOpen: false,
+        bookmarked: false,
+        children: {}
+      }
     };
+  }
+
+  componentDidMount() {
+    let bookmarks = localStorage.getItem("bookmarks");
 
     this.setState({
-      nodes: [rootNode]
+      nodes: this._getRootNode(),
+      bookmarks: bookmarks ? JSON.parse(bookmarks) : {}
     });
+
+    // Open first level folders
+    this.openFolders();
   }
+
+  openFolders = async () => {
+    const rootNode = this._getRootNode()[this.BASE_PATH];
+    const children = await this.getChildNodes(rootNode);
+    rootNode.children = children;
+    rootNode.isOpen = true;
+
+    for (const path in children) {
+      if (children.hasOwnProperty(path)) {
+        const node = children[path];
+
+        if (node.type === "directory") {
+          const subChildren = await this.getChildNodes(node);
+          node.children = { ...subChildren };
+          node.isOpen = true;
+        }
+      }
+    }
+
+    this.setState({
+      nodes: { rootNode }
+    });
+  };
 
   getChildNodes = async node => {
     if (!node.children) {
-      return [];
+      return {};
     }
     return await request.tree(node.path);
   };
@@ -141,6 +175,19 @@ export default class Tree extends React.Component {
     }
   };
 
+  handleRemoveBookmark = node => {
+    let bookmarks = localStorage.getItem("bookmarks");
+    bookmarks = JSON.parse(bookmarks);
+
+    delete bookmarks[node.path];
+
+    localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+
+    this.setState({
+      bookmarks
+    });
+  };
+
   handleRightClick = (event, data) => {
     event.stopPropagation();
     const { action, node: selectedNode } = data;
@@ -177,17 +224,27 @@ export default class Tree extends React.Component {
         // Remove the item from the bookmark history
         let bookmarks = this.state.bookmarks;
         delete bookmarks[selectedNode.path];
+
+        // Update localstorage
+        localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+
         this.setState({
           bookmarks
         });
       } else {
         selectedNode.bookmarked = true;
+
+        const bookmarks = {
+          ...this.state.bookmarks,
+          [selectedNode.path]: selectedNode
+        };
+
+        // Add to localstorage
+        localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+
         // Add the item to the bookmark history
         this.setState({
-          bookmarks: {
-            ...this.state.bookmarks,
-            [selectedNode.path]: selectedNode
-          }
+          bookmarks
         });
       }
 
@@ -198,19 +255,15 @@ export default class Tree extends React.Component {
     }
   };
 
-  handleBookmarkClick = selectedBookmark => {
-    console.log("handleBookmarkClick", selectedBookmark.path);
-  };
-
-  // Open nested folders
-  openFoldersRecursively = (nodes, folderToOpen) => {
-    for (const iterator of nodes) {
-    }
+  handleBookmarkClick = async selectedBookmark => {
+    console.log("handleBookmarkClick", selectedBookmark);
   };
 
   // Adds children to a selected folder
   addToChildren = (nodes, selectedNode, newChildren) => {
-    for (const iterator of nodes) {
+    for (const path in nodes) {
+      const iterator = nodes[path];
+
       if (iterator.type === "file") {
         continue;
       }
@@ -218,7 +271,7 @@ export default class Tree extends React.Component {
       if (selectedNode.path.includes(iterator.path)) {
         // If its exactly the same path append the new node in its children array
         if (selectedNode.path === iterator.path) {
-          iterator.children.unshift(...newChildren);
+          iterator.children = { ...newChildren, ...iterator.children };
 
           // Prepare a new version of the current state
           const newNodes = this.state.nodes;
@@ -242,7 +295,9 @@ export default class Tree extends React.Component {
 
   // Removes children from a selected folder
   emptyChildren = (nodes, selectedNode) => {
-    for (const iterator of nodes) {
+    for (let path in nodes) {
+      const iterator = nodes[path];
+
       if (iterator.type === "file") {
         continue;
       }
@@ -271,12 +326,14 @@ export default class Tree extends React.Component {
 
   // Add an item (file or folder) to the nodes array
   addItem = (nodes, selectedNode) => {
-    for (let [index, iterator] of nodes.entries()) {
+    for (const path in nodes) {
+      const iterator = nodes[path];
+
       if (selectedNode.path.includes(iterator.path)) {
-        // If its exactly the same path append the new node in its children array
+        // If its exactly the same path append the new node in its children object
         if (selectedNode.path === iterator.path) {
-          // Add the element to the nodes array
-          nodes[index] = {
+          // Add the element to the nodes object
+          nodes[path] = {
             ...selectedNode,
             name: selectedNode.newName,
             path: selectedNode.newPath
@@ -300,12 +357,15 @@ export default class Tree extends React.Component {
 
   // Removes an item (file or folder) from the nodes array
   removeItem = (nodes, selectedNode) => {
-    for (let [index, iterator] of nodes.entries()) {
+    for (const path in nodes) {
+      const iterator = nodes[path];
+
       if (selectedNode.path.includes(iterator.path)) {
         // If its exactly the same path append the new node in its children array
         if (selectedNode.path === iterator.path) {
           // Remove the element from the nodes array
-          nodes.splice(index, 1);
+          // nodes.splice(path, 1);
+          delete nodes[path];
 
           // Prepare a new version of the current state
           const newNodes = this.state.nodes;
@@ -383,37 +443,44 @@ export default class Tree extends React.Component {
 
   render() {
     return (
-      <div className="container" style={{ width: this.props.width || "250px" }}>
+      <div className="container" style={this.props.styles}>
         <Search
           basePath={this.BASE_PATH}
           bookmarks={this.state.bookmarks}
           handleBookmarkClick={this.handleBookmarkClick}
+          handleRemoveBookmark={this.handleRemoveBookmark}
         />
         <div className="indent-root">
-          {this.state.nodes.map(node => (
-            <div key={node.path}>
-              <div
-                onClick={event => {
-                  this.handleClick(event, node);
-                }}
-                className="item-wrapper mb"
-              >
-                {icon.file(node)}
-                {node.name}
-              </div>
+          {Object.keys(this.state.nodes).map(path => {
+            const node = this.state.nodes[path];
 
-              <TreeNode
-                node={node}
-                currentFile={this.state.currentFile}
-                handleClick={this.handleClick}
-                handleRightClick={this.handleRightClick}
-                onDragStart={this.onDragStart}
-                onDrag={this.onDrag}
-                onDragOver={this.onDragOver}
-                onDrop={this.onDrop}
-              />
-            </div>
-          ))}
+            return (
+              <div key={path}>
+                <div
+                  onClick={event => {
+                    this.handleClick(event, node);
+                  }}
+                  className="item-wrapper mb"
+                >
+                  {icon.file(node)}
+                  {node.name}
+                </div>
+
+                <TreeNode
+                  node={node}
+                  bookmarks={this.state.bookmarks}
+                  currentFile={this.state.currentFile}
+                  handleClick={this.handleClick}
+                  handleRightClick={this.handleRightClick}
+                  onDragStart={this.onDragStart}
+                  onDrag={this.onDrag}
+                  onDragOver={this.onDragOver}
+                  onDrop={this.onDrop}
+                  disableContextMenu={this.props.disableContextMenu}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
     );
@@ -421,6 +488,7 @@ export default class Tree extends React.Component {
 }
 
 Tree.propTypes = {
+  styles: PropTypes.object,
   basePath: PropTypes.string.isRequired,
-  width: PropTypes.string
+  disableContextMenu: PropTypes.bool
 };

@@ -4,32 +4,62 @@ import request from "../services/request";
 import PropTypes from "prop-types";
 import Bookmark from "./Bookmark";
 import "../Search.css";
+import spinner from "../images/spinner.gif";
 
 class Search extends React.Component {
   state = {
     query: "",
     result: [],
+    showSearchLoader: false,
     showSearchBox: false
   };
 
-  handleSearch = async event => {
-    const dirPath = this.props.basePath;
-    const query = event.target.value;
-    const result = await request.search(dirPath, query);
+  runDebounce = this.debounce(this.doSearch, 1000);
 
+  debounce(fn, delay) {
+    let timer;
+    return function() {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        fn.apply(this, arguments);
+      }, delay);
+    };
+  }
+
+  async doSearch(query) {
     if (!query) {
       this.setState({
         query: "",
         result: [],
-        showSearchBox: false
+        showSearchBox: false,
+        showSearchLoader: false
+      });
+      return;
+    }
+
+    const dirPath = this.props.basePath;
+    const result = await request.search(dirPath, query);
+
+    this.setState({
+      query,
+      result,
+      showSearchBox: true,
+      showSearchLoader: false
+    });
+  }
+
+  handleChange = query => {
+    if (!query) {
+      this.setState({
+        query: ""
       });
       return;
     }
 
     this.setState({
       query,
-      result,
-      showSearchBox: true
+      showSearchBox: true,
+      showSearchLoader: true
     });
   };
 
@@ -68,7 +98,24 @@ class Search extends React.Component {
     );
   };
 
+  loadingResults = () => {
+    return (
+      <div className="item-wrapper search-results empty-results">
+        <img
+          src={spinner}
+          width="50"
+          height="50"
+          alt="Loading Search Results"
+        />
+      </div>
+    );
+  };
+
   results = () => {
+    if (this.state.showSearchLoader) {
+      return this.loadingResults();
+    }
+
     if (this.state.result.length > 0) {
       return this.showResults();
     }
@@ -84,13 +131,17 @@ class Search extends React.Component {
           type="text"
           className="fa search"
           placeholder="Search"
-          onChange={this.handleSearch}
+          onChange={event => {
+            this.handleChange(event.target.value);
+            this.runDebounce(event.target.value);
+          }}
           onKeyDown={this.clearSearch}
           value={this.state.query}
         />
         <Bookmark
           bookmarks={this.props.bookmarks}
           handleBookmarkClick={this.props.handleBookmarkClick}
+          handleRemoveBookmark={this.props.handleRemoveBookmark}
         />
 
         <div style={{ display: this.state.showSearchBox ? "block" : "none" }}>
@@ -103,7 +154,9 @@ class Search extends React.Component {
 
 Search.propTypes = {
   basePath: PropTypes.string.isRequired,
-  bookmarks: PropTypes.object.isRequired
+  bookmarks: PropTypes.object.isRequired,
+  handleBookmarkClick: PropTypes.func.isRequired,
+  handleRemoveBookmark: PropTypes.func.isRequired
 };
 
 export default Search;

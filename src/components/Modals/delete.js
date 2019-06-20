@@ -12,11 +12,11 @@ const deleteModal = ({ path, handleOnDelete }) => {
             <div className="react-confirm-alert-body">
               <h1>Delete Confirmation</h1>
               <p>
-                Sure to delete <code>{path}</code>?
+                You are about to delete <code>{path}</code>
               </p>
               <div className="react-confirm-alert-button-group">
                 <button className="btn-default" onClick={onClose}>
-                  No
+                  Cancel
                 </button>
                 <button
                   className="btn-danger pull-right"
@@ -25,7 +25,7 @@ const deleteModal = ({ path, handleOnDelete }) => {
                     onClose();
                   }}
                 >
-                  Yes
+                  Delete
                 </button>
               </div>
             </div>
