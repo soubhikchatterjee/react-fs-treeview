@@ -1,7 +1,9 @@
 {
-  "name": "treeviewreact",
+  "name": "react-advanced-treeview",
   "version": "0.1.0",
   "private": true,
+  "main": "build/index.js",
+  "module": "build/index.js",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "1.2.19",
     "@fortawesome/free-solid-svg-icons": "5.9.0",

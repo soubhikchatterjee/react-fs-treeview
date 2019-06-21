@@ -2,6 +2,7 @@ import React from "react";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import PropTypes from "prop-types";
+import "./modal.css";
 
 const alertModal = ({
   title = "Notification",

@@ -1,7 +1,8 @@
 import React from "react";
 import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
-import icon from "./fontawesome";
+import icon from "../icon";
 import PropTypes from "prop-types";
+import "./contextmenu.css";
 
 const TreeNode = props => {
   const {
@@ -62,6 +63,7 @@ const TreeNode = props => {
                 <MenuItem
                   data={{ node: child, action: "bookmark" }}
                   onClick={handleRightClick}
+                  disabled={child.type === "directory"}
                 >
                   {child.bookmarked ? "Remove Bookmark" : "Bookmark"}
                 </MenuItem>

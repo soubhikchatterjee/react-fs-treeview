@@ -2,6 +2,7 @@ import React from "react";
 import { confirmAlert } from "react-confirm-alert"; // Import
 import "react-confirm-alert/src/react-confirm-alert.css"; // Import css
 import PropTypes from "prop-types";
+import "./modal.css";
 
 const moveModal = ({
   filename,
@@ -26,7 +27,7 @@ const moveModal = ({
               </p>
               <div className="divider" />
               <div className="replace-folder-wrapper">
-                <div>Replace Folder (if exists):</div>
+                <div>Replace Folder/File (if exists):</div>
                 <div>
                   <input
                     type="checkbox"
