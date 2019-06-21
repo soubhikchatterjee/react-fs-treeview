@@ -2,6 +2,11 @@
 
 Specify a path of a directory on your machine and this component will render a treeview of the path including its child files/folders. This component uses lazy loading of the children hence making it blazing fast.
 
+[![npm](https://img.shields.io/npm/v/react-simplified-modal.svg)](https://www.npmjs.com/package/react-fs-treeview)
+![GitHub issues](https://img.shields.io/github/issues/soubhikchatterjee/react-fs-treeview.svg)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/soubhikchatterjee/react-fs-treeview.svg)
+[![HitCount](http://hits.dwyl.io/soubhikchatterjee/react-fs-treeview.svg)](http://hits.dwyl.io/soubhikchatterjee/react-fs-treeview)
+
 ### Features
 
 - Deep nesting of folders till nth level.
@@ -20,11 +25,6 @@ Specify a path of a directory on your machine and this component will render a t
 ### Youtube Screencast
 
 [![Screencast](http://img.youtube.com/vi/jhVRYDqTxNQ/0.jpg)](http://www.youtube.com/watch?v=jhVRYDqTxNQ)
-
-[![npm](https://img.shields.io/npm/v/react-simplified-modal.svg)](https://www.npmjs.com/package/react-fs-treeview)
-![GitHub issues](https://img.shields.io/github/issues/soubhikchatterjee/react-fs-treeview.svg)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/soubhikchatterjee/react-fs-treeview.svg)
-[![HitCount](http://hits.dwyl.io/soubhikchatterjee/react-fs-treeview.svg)](http://hits.dwyl.io/soubhikchatterjee/react-fs-treeview)
 
 ## Install
 
