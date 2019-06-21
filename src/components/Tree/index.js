@@ -1,18 +1,16 @@
 import React from "react";
 import path from "path";
 import PropTypes from "prop-types";
-import request from "../services/request";
+import request from "../../services/request";
 import TreeNode from "./TreeNode";
-import icon from "./fontawesome";
-import Search from "./Search";
-import RenameModal from "./Modals/rename";
-import DeleteModal from "./Modals/delete";
-import MoveModal from "./Modals/move";
-import AlertModal from "./Modals/alert";
+import icon from "../icon";
+import Search from "../Search";
+import RenameModal from "../Modals/rename";
+import DeleteModal from "../Modals/delete";
+import MoveModal from "../Modals/move";
+import AlertModal from "../Modals/alert";
 
 export default class Tree extends React.Component {
-  BASE_PATH = this.props.basePath;
-
   state = {
     nodes: {},
     newFileName: "",
@@ -30,9 +28,9 @@ export default class Tree extends React.Component {
 
   _getRootNode() {
     return {
-      [this.BASE_PATH]: {
-        name: path.basename(this.BASE_PATH),
-        path: this.BASE_PATH,
+      [this.props.basePath]: {
+        name: path.basename(this.props.basePath),
+        path: this.props.basePath,
         type: "directory",
         size: 0,
         isOpen: false,
@@ -55,7 +53,7 @@ export default class Tree extends React.Component {
   }
 
   openFolders = async () => {
-    const rootNode = this._getRootNode()[this.BASE_PATH];
+    const rootNode = this._getRootNode()[this.props.basePath];
     const children = await this.getChildNodes(rootNode);
     rootNode.children = children;
     rootNode.isOpen = true;
@@ -445,7 +443,7 @@ export default class Tree extends React.Component {
     return (
       <div className="container" style={this.props.styles}>
         <Search
-          basePath={this.BASE_PATH}
+          basePath={this.props.basePath}
           bookmarks={this.state.bookmarks}
           handleBookmarkClick={this.handleBookmarkClick}
           handleRemoveBookmark={this.handleRemoveBookmark}

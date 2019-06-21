@@ -1,10 +1,10 @@
 import React from "react";
-import icon from "./fontawesome";
-import request from "../services/request";
+import icon from "../icon";
+import request from "../../services/request";
 import PropTypes from "prop-types";
-import Bookmark from "./Bookmark";
-import "../Search.css";
-import spinner from "../images/spinner.gif";
+import Bookmark from "../Bookmark";
+import "./search.css";
+import spinner from "../../images/spinner.gif";
 
 class Search extends React.Component {
   state = {

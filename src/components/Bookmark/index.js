@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import icon from "./fontawesome";
-import "../Bookmark.css";
+import icon from "../icon";
+import "./bookmark.css";
 
 class Bookmark extends React.Component {
   state = {
