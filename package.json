@@ -8,7 +8,7 @@
       "url": "http://soubhik.chatterjee.pw"
     }
   ],
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": false,
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -57,7 +57,7 @@
   ],
   "scripts": {
     "start": "react-scripts start",
-    "build-main": "react-scripts build",
+    "build-dev": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "build": "rimraf dist && NODE_ENV=production babel src/lib --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,__snapshots__"

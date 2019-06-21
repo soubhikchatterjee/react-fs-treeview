@@ -9,11 +9,9 @@ class App extends React.Component {
       <React.Fragment>
         <Tree
           styles={{ width: "300px", fontSize: "0.9em" }}
-          basePath="/home/soubhik/Documents/EV Syncer Test Data/Sync Dummy Data/NestedSETS"
+          basePath=""
           disableContextMenu={false}
-          onItemSelected={a => {
-            console.log("onItemSelected", a);
-          }}
+          onItemSelected={() => {}}
         />
       </React.Fragment>
     );
