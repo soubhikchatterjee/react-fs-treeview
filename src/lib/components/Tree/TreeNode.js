@@ -79,6 +79,7 @@ const TreeNode = props => {
                 onDrag={onDrag}
                 onDragOver={onDragOver}
                 onDrop={onDrop}
+                disableContextMenu={disableContextMenu}
               />
             </div>
           );
