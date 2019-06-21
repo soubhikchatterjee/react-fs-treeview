@@ -43,6 +43,7 @@ import Treeview from "react-fs-treeview";
   styles={{ width: "500px", fontSize: "0.9em" }}
   basePath="/var/www/html"
   disableContextMenu={false}
+  onItemSelected={selectedItem => console.log(selectedItem)}
 />
 ```
 
