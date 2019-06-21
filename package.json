@@ -1,9 +1,20 @@
 {
-  "name": "react-advanced-treeview",
-  "version": "0.1.0",
-  "private": true,
-  "main": "build/index.js",
-  "module": "build/index.js",
+  "name": "react-fs-treeview",
+  "author": "Soubhik Chatterjee <soubhik@chatterjee.pw>",
+  "contributors": [
+    {
+      "name": "Soubhik Chatterjee",
+      "email": "soubhik@chatterjee.pw",
+      "url": "http://soubhik.chatterjee.pw"
+    }
+  ],
+  "version": "0.1.5",
+  "private": false,
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "files": [
+    "dist"
+  ],
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "1.2.19",
     "@fortawesome/free-solid-svg-icons": "5.9.0",
@@ -23,11 +34,33 @@
     "rimraf": "2.6.3",
     "sanitize-filename": "1.6.1"
   },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "babel-preset-react-app": "^7.0.1",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
+    "react-scripts": "^2.1.5",
+    "rimraf": "^2.6.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/soubhikchatterjee/react-fs-treeview.git"
+  },
+  "bugs": {
+    "url": "https://github.com/soubhikchatterjee/react-fs-treeview/issues"
+  },
+  "keywords": [
+    "treeview",
+    "filesystem explorer",
+    "file explorer",
+    "react treeview for files"
+  ],
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build-dev": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build": "rimraf dist && NODE_ENV=production babel src/lib --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,__snapshots__"
   },
   "eslintConfig": {
     "extends": "react-app"

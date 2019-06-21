@@ -26,28 +26,33 @@ app.get("/", (req, res) => {
 
     let finalList = {};
     files.forEach(file => {
-      const fullPath = `${dirPath}/${file}`;
-      const isDirectory = fs.lstatSync(fullPath).isDirectory();
-      let fileProperties = {
-        [fullPath]: {
-          name: file,
-          path: fullPath,
-          size: fs.statSync(fullPath).size,
-          extension: path.extname(file),
-          type: isDirectory ? "directory" : "file",
-          isOpen: false,
-          bookmarked: false
-        }
-      };
+      try {
+        const fullPath = `${dirPath}/${file}`;
+        const isDirectory = fs.lstatSync(fullPath).isDirectory();
+        let fileProperties = {
+          [fullPath]: {
+            name: file,
+            path: fullPath,
+            size: fs.statSync(fullPath).size,
+            extension: path.extname(file),
+            type: isDirectory ? "directory" : "file",
+            isOpen: false,
+            bookmarked: false
+          }
+        };
 
-      if (isDirectory) {
-        delete fileProperties[fullPath].extension;
-        fileProperties[fullPath].children = {};
-        // Directories should appear on top
-        finalList = { ...fileProperties, ...finalList };
-      } else {
-        // Files should appear at the end
-        finalList = { ...finalList, ...fileProperties };
+        if (isDirectory) {
+          delete fileProperties[fullPath].extension;
+          fileProperties[fullPath].children = {};
+          // Directories should appear on top
+          finalList = { ...fileProperties, ...finalList };
+        } else {
+          // Files should appear at the end
+          finalList = { ...finalList, ...fileProperties };
+        }
+      } catch (error) {
+        console.log("Error:", error);
+        return res.json({});
       }
     });
 

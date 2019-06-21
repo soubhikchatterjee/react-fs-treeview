@@ -1,68 +1,57 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# React FileSystem Treeview (react-fs-treeview)
 
-## Available Scripts
+Specify a path of a directory on your machine and this component will render a treeview of the path including its child files/folders. This component uses lazy loading of the children hence making it blazing fast.
 
-In the project directory, you can run:
+### Features
 
-### `npm start`
+- Deep nesting of folders till nth level.
+- Lazy loading of child nodes.
+- Bookmark a file.
+- Search for a filename.
+- Rename a node.
+- Delete a node
+- Drag/Drop a node to another folder.
+- Resizable frame.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Screenshot
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+![Screenshot](https://i.imgur.com/cxp9U8a.png "React FileSystem Treeview")
 
-### `npm test`
+[![Screencast](http://img.youtube.com/vi/jhVRYDqTxNQ/0.jpg)](http://www.youtube.com/watch?v=jhVRYDqTxNQ)
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+[![npm](https://img.shields.io/npm/v/react-simplified-modal.svg)](https://www.npmjs.com/package/react-fs-treeview)
+![GitHub issues](https://img.shields.io/github/issues/soubhikchatterjee/react-fs-treeview.svg)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/soubhikchatterjee/react-fs-treeview.svg)
+[![HitCount](http://hits.dwyl.io/soubhikchatterjee/react-fs-treeview.svg)](http://hits.dwyl.io/soubhikchatterjee/react-fs-treeview)
 
-### `npm run build`
+## Install
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+`npm i react-fs-treeview`
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+## Import the modal.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```js
+import Treeview from "react-fs-treeview";
+```
 
-### `npm run eject`
+## Usage
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```js
+<Tree
+  styles={{ width: "500px", fontSize: "0.9em" }}
+  basePath="/var/www/html"
+  disableContextMenu={false}
+/>
+```
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+_Note:_ For actions like Rename, Delete, Moving items needs a nodejs server to be run on the backend. The server code can be found at: `./server/server.js`. Set an env variable `fsTreeViewUrl` and set its value to this server url (Eg: `http://localhost:5000`)
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Props
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+basePath : (_string_) Path of the folder.
 
-## Learn More
+styles : (_object_) Styles that you would like to apply to the treeview
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+disableContextMenu : (_boolean_) If `true` will show the options (Rename, Delete and Bookmark) when right clicked on a file/directory. Defaults to `false`.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+onItemSelected : (_callback_) function called when a file/folder is clicked
