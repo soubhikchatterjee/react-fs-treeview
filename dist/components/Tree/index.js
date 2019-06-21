@@ -712,7 +712,6 @@ function (_React$Component) {
 }(React.Component);
 
 Tree.defaultProps = {
-  basePath: "Missing 'basePath' props...",
-  disableContextMenu: false
+  basePath: "Missing 'basePath' props..."
 };
 export default Tree;

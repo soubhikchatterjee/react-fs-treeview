@@ -8,7 +8,7 @@
       "url": "http://soubhik.chatterjee.pw"
     }
   ],
-  "version": "0.1.7",
+  "version": "0.1.8",
   "private": false,
   "main": "dist/index.js",
   "module": "dist/index.js",

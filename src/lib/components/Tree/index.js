@@ -496,8 +496,7 @@ Tree.propTypes = {
 };
 
 Tree.defaultProps = {
-  basePath: "Missing 'basePath' props...",
-  disableContextMenu: false
+  basePath: "Missing 'basePath' props..."
 };
 
 export default Tree;
