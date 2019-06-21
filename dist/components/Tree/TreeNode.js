@@ -70,7 +70,8 @@ var TreeNode = function TreeNode(props) {
       onDragStart: _onDragStart,
       onDrag: onDrag,
       onDragOver: onDragOver,
-      onDrop: _onDrop
+      onDrop: _onDrop,
+      disableContextMenu: disableContextMenu
     }));
   }));
 };
