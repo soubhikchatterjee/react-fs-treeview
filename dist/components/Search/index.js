@@ -87,7 +87,7 @@ function (_React$Component) {
         className: "item-wrapper search-results empty-results"
       }, React.createElement("span", {
         className: "tomato"
-      }, icon.close()), " No Matching Records");
+      }, icon.close()), " No Matching Results");
     };
 
     _this.loadingResults = function () {
@@ -204,6 +204,12 @@ function (_React$Component) {
         value: this.state.query
       }), React.createElement(Bookmark, {
         bookmarks: this.props.bookmarks,
+        hideSearchResults: function hideSearchResults() {
+          return _this3.setState({
+            showSearchBox: false
+          });
+        },
+        showSearchBox: this.state.showSearchBox,
         handleBookmarkClick: this.props.handleBookmarkClick,
         handleRemoveBookmark: this.props.handleRemoveBookmark
       }), React.createElement("div", {

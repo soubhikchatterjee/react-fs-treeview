@@ -8,7 +8,7 @@
       "url": "http://soubhik.chatterjee.pw"
     }
   ],
-  "version": "0.1.8",
+  "version": "0.1.9",
   "private": false,
   "main": "dist/index.js",
   "module": "dist/index.js",
@@ -60,7 +60,7 @@
     "build-dev": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "build": "rimraf dist && NODE_ENV=production babel src/lib --out-dir dist --copy-files --ignore __tests__,spec.js,test.js,__snapshots__"
+    "build": "rimraf dist && NODE_ENV=production babel src/lib --out-dir dist --copy-files --ignore \"src/lib/server/server.js\",__tests__,spec.js,test.js,__snapshots__"
   },
   "eslintConfig": {
     "extends": "react-app"

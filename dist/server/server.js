@@ -65,7 +65,7 @@ app.get("/search", (req, res) => {
   const dirPath = base64.decode(req.query.path) || "";
   let query = base64.decode(req.query.query) || "";
   query = sanitize(query);
-  const maxResults = 10;
+  const maxResults = 20;
 
   glob(`${dirPath}/**/*.*`, {}, function(er, files) {
     const final = [];

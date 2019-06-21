@@ -9,9 +9,15 @@ class Bookmark extends React.Component {
   };
 
   toggleBookmarkResults = () => {
-    this.setState({
-      showBookmarkResults: !this.state.showBookmarkResults
-    });
+    this.setState(
+      {
+        showBookmarkResults: !this.state.showBookmarkResults
+      },
+      () => {
+        // Hide the search result box since bookmarks box is shown
+        this.state.showBookmarkResults && this.props.hideSearchResults();
+      }
+    );
   };
 
   bookmarkList = () => {
@@ -65,9 +71,16 @@ class Bookmark extends React.Component {
         </div>
 
         <div
-          style={{ display: this.state.showBookmarkResults ? "block" : "none" }}
+          style={{
+            display:
+              this.state.showBookmarkResults && !this.props.showSearchBox
+                ? "block"
+                : "none"
+          }}
         >
-          <p className="title">Bookmarks</p>
+          <p className="title">
+            Bookmarks <small onClick={this.toggleBookmarkResults}>Close</small>
+          </p>
           {this.bookmarkList()}
         </div>
       </div>
@@ -77,6 +90,8 @@ class Bookmark extends React.Component {
 
 Bookmark.propTypes = {
   bookmarks: PropTypes.object.isRequired,
+  showSearchBox: PropTypes.bool.isRequired,
+  hideSearchResults: PropTypes.func.isRequired,
   handleBookmarkClick: PropTypes.func.isRequired,
   handleRemoveBookmark: PropTypes.func.isRequired
 };

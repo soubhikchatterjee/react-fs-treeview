@@ -673,8 +673,7 @@ function (_React$Component) {
       var _this2 = this;
 
       return React.createElement("div", {
-        className: "container",
-        style: this.props.styles
+        className: "container ".concat(this.props.className)
       }, React.createElement(Search, {
         basePath: this.props.basePath,
         bookmarks: this.state.bookmarks,
@@ -712,6 +711,7 @@ function (_React$Component) {
 }(React.Component);
 
 Tree.defaultProps = {
+  className: "",
   basePath: "Missing 'basePath' props..."
 };
 export default Tree;

@@ -33,27 +33,27 @@ Specify a path of a directory on your machine and this component will render a t
 ## Import the modal.
 
 ```js
-import Treeview from "react-fs-treeview";
+import Tree from "react-fs-treeview";
 ```
 
 ## Usage
 
 ```js
 <Tree
-  styles={{ width: "500px", fontSize: "0.9em" }}
+  className="class1 class2 class3"
   basePath="/var/www/html"
   disableContextMenu={false}
   onItemSelected={selectedItem => console.log(selectedItem)}
 />
 ```
 
-_Note:_ For actions like Rename, Delete, Moving items needs a nodejs server to be run on the backend. The server code can be found at: `./server/server.js`. Set an env variable `fsTreeViewUrl` and set its value to this server url (Eg: `http://localhost:5000`)
+_Note:_ For actions like listing of trees, Rename, Delete, Moving items, it is required to run the treeview server. The server code can be found at: `./dist/server/server.js`. Incase if you wish to run the server on the non-default host or port i.e. `http://localhost:5000`, set an env variable `fsTreeViewUrl` and set its value to the server url.
 
 ## Props
 
 basePath : (_string_) Path of the folder.
 
-styles : (_object_) Styles that you would like to apply to the treeview
+className : (_object_) CSS class(es) that you would like to apply to the treeview
 
 disableContextMenu : (_boolean_) If `true` will show the options (Rename, Delete and Bookmark) when right clicked on a file/directory. Defaults to `false`.
 

@@ -97,7 +97,7 @@ class Search extends React.Component {
   emptyResults = () => {
     return (
       <div className="item-wrapper search-results empty-results">
-        <span className="tomato">{icon.close()}</span> No Matching Records
+        <span className="tomato">{icon.close()}</span> No Matching Results
       </div>
     );
   };
@@ -144,6 +144,8 @@ class Search extends React.Component {
         />
         <Bookmark
           bookmarks={this.props.bookmarks}
+          hideSearchResults={() => this.setState({ showSearchBox: false })}
+          showSearchBox={this.state.showSearchBox}
           handleBookmarkClick={this.props.handleBookmarkClick}
           handleRemoveBookmark={this.props.handleRemoveBookmark}
         />
