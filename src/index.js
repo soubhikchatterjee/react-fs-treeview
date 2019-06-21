@@ -8,8 +8,8 @@ class App extends React.Component {
     return (
       <React.Fragment>
         <Tree
-          styles={{ width: "300px", fontSize: "0.9em" }}
-          basePath=""
+          className=""
+          basePath="/home/soubhik/Documents/EV Syncer Test Data/Sync Dummy Data/NestedSETS"
           disableContextMenu={false}
           onItemSelected={() => {}}
         />

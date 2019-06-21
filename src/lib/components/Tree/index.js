@@ -443,7 +443,7 @@ class Tree extends React.Component {
 
   render() {
     return (
-      <div className="container" style={this.props.styles}>
+      <div className={`container ${this.props.className}`}>
         <Search
           basePath={this.props.basePath}
           bookmarks={this.state.bookmarks}
@@ -489,13 +489,14 @@ class Tree extends React.Component {
 }
 
 Tree.propTypes = {
-  styles: PropTypes.object,
+  className: PropTypes.string,
   basePath: PropTypes.string.isRequired,
   disableContextMenu: PropTypes.bool,
   onItemSelected: PropTypes.func
 };
 
 Tree.defaultProps = {
+  className: "",
   basePath: "Missing 'basePath' props..."
 };
 
