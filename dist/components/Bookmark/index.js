@@ -31,6 +31,9 @@ function (_React$Component) {
     _this.toggleBookmarkResults = function () {
       _this.setState({
         showBookmarkResults: !_this.state.showBookmarkResults
+      }, function () {
+        // Hide the search result box since bookmarks box is shown
+        _this.state.showBookmarkResults && _this.props.hideSearchResults();
       });
     };
 
@@ -82,11 +85,13 @@ function (_React$Component) {
         title: "Show Bookmarks"
       }, icon.star()), React.createElement("div", {
         style: {
-          display: this.state.showBookmarkResults ? "block" : "none"
+          display: this.state.showBookmarkResults && !this.props.showSearchBox ? "block" : "none"
         }
       }, React.createElement("p", {
         className: "title"
-      }, "Bookmarks"), this.bookmarkList()));
+      }, "Bookmarks ", React.createElement("small", {
+        onClick: this.toggleBookmarkResults
+      }, "Close")), this.bookmarkList()));
     }
   }]);
 
