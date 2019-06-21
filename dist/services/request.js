@@ -3,7 +3,7 @@ import _asyncToGenerator from "@babel/runtime/helpers/esm/asyncToGenerator";
 import axios from "axios";
 import base64 from "base-64";
 import PropTypes from "prop-types";
-var BASE_URL = "http://localhost:5000";
+var BASE_URL = process.env.fsTreeViewUrl || "http://localhost:5000";
 
 var tree =
 /*#__PURE__*/

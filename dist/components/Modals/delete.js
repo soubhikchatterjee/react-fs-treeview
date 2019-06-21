@@ -17,7 +17,9 @@ var deleteModal = function deleteModal(_ref) {
         className: "react-confirm-alert"
       }, React.createElement("div", {
         className: "react-confirm-alert-body"
-      }, React.createElement("h1", null, "Delete Confirmation"), React.createElement("p", null, "You are about to delete ", React.createElement("code", null, path)), React.createElement("div", {
+      }, React.createElement("h1", null, "Delete Confirmation"), React.createElement("p", null, "You are about to delete", " ", React.createElement("code", {
+        className: "react-fs-treeview"
+      }, path)), React.createElement("div", {
         className: "react-confirm-alert-button-group"
       }, React.createElement("button", {
         className: "btn-default",

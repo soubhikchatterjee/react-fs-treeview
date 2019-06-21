@@ -21,7 +21,7 @@ var moveModal = function moveModal(_ref) {
       }, React.createElement("div", {
         className: "react-confirm-alert-body"
       }, React.createElement("h1", null, "Confirm Move"), React.createElement("p", null, "You are about to move ", React.createElement("strong", null, filename)), React.createElement("p", null, "to"), React.createElement("p", null, React.createElement("code", {
-        className: "tomato"
+        className: "react-fs-treeview tomato"
       }, destinationPath)), React.createElement("div", {
         className: "divider"
       }), React.createElement("div", {

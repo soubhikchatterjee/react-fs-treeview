@@ -196,9 +196,12 @@ function (_React$Component) {
                 newChildren = _context3.sent;
 
                 // Add the new children to the selected folder
-                _this.addToChildren(_this.state.nodes, selectedNode, newChildren);
+                _this.addToChildren(_this.state.nodes, selectedNode, newChildren); // Propagate the selected item to the parent component
 
-              case 11:
+
+                _this.props.onItemSelected(selectedNode);
+
+              case 12:
               case "end":
                 return _context3.stop();
             }
@@ -440,7 +443,7 @@ function (_React$Component) {
           while (1) {
             switch (_context7.prev = _context7.next) {
               case 0:
-                console.log("handleBookmarkClick", selectedBookmark);
+                return _context7.abrupt("return", _this.props.onItemSelected(selectedBookmark));
 
               case 1:
               case "end":
@@ -675,6 +678,7 @@ function (_React$Component) {
       }, React.createElement(Search, {
         basePath: this.props.basePath,
         bookmarks: this.state.bookmarks,
+        onItemSelected: this.props.onItemSelected,
         handleBookmarkClick: this.handleBookmarkClick,
         handleRemoveBookmark: this.handleRemoveBookmark
       }), React.createElement("div", {
@@ -707,4 +711,8 @@ function (_React$Component) {
   return Tree;
 }(React.Component);
 
-export { Tree as default };
+Tree.defaultProps = {
+  basePath: "Missing 'basePath' props...",
+  disableContextMenu: false
+};
+export default Tree;

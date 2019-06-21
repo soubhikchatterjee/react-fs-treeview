@@ -71,6 +71,9 @@ function (_React$Component) {
         className: "item-wrapper search-results"
       }, _this.state.result.map(function (item) {
         return React.createElement("div", {
+          onClick: function onClick() {
+            return _this.props.onItemSelected(item);
+          },
           key: item.path,
           className: "indent mb search-item"
         }, React.createElement("div", null, icon.file(item), " ", React.createElement("span", null, item.name)), React.createElement("div", {

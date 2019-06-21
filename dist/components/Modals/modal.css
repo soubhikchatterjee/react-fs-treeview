@@ -12,7 +12,9 @@
   background: red !important;
 }
 
-code {
+code.react-fs-treeview {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
   background-color: #e0dede;
   border-radius: 3px;
   font-family: courier, monospace;
@@ -37,7 +39,6 @@ react-confirm-alert-overlay.rename input[type="text"] {
   font-weight: 500;
   display: flex;
   padding-top: 20px;
-
 }
 
 .divider {
