@@ -8,10 +8,10 @@ class App extends React.Component {
     return (
       <React.Fragment>
         <Tree
-          className=""
-          basePath="/home/soubhik/Documents/EV Syncer Test Data/Sync Dummy Data/NestedSETS"
-          disableContextMenu={false}
-          onItemSelected={() => {}}
+          className={this.props.className || ""}
+          basePath={this.props.basePath || "/"}
+          disableContextMenu={this.props.disableContextMenu || false}
+          onItemSelected={this.props.onItemSelected || null}
         />
       </React.Fragment>
     );
