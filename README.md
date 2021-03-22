@@ -24,7 +24,7 @@ Specify a path of a directory on your machine and this component will render a t
 
 ### Youtube Screencast
 
-[![Screencast](http://img.youtube.com/vi/jhVRYDqTxNQ/0.jpg)](http://www.youtube.com/watch?v=jhVRYDqTxNQ)
+[![Screencast](http://img.youtube.com/vi/k9xwenhVJOU/0.jpg)](https://www.youtube.com/watch?v=k9xwenhVJOU)
 
 ## Install
 
