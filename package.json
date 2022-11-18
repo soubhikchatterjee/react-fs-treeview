@@ -30,7 +30,7 @@
     "react-confirm-alert": "2.4.1",
     "react-contextmenu": "2.11.0",
     "react-dom": "^16.8.6",
-    "react-scripts": "3.0.1",
+    "react-scripts": "5.0.1",
     "rimraf": "2.6.3",
     "sanitize-filename": "1.6.1"
   },
@@ -39,7 +39,7 @@
     "babel-preset-react-app": "^7.0.1",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
-    "react-scripts": "^2.1.5",
+    "react-scripts": "^5.0.1",
     "rimraf": "^2.6.3"
   },
   "repository": {
